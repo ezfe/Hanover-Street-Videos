@@ -1,0 +1,19 @@
+<html>
+<head>
+	<script src="js/jquery.min.js"></script>
+	<script>
+		function getCurrentTime(id) {
+			return document.getElementById(id).currentTime
+		}
+		$(document).ready(function(){
+			document.getElementById('video').ontimeupdate = function(){
+				$('#timestamp').html(getCurrentTime('video'));
+			});
+		});
+	</script>
+</head>
+<body style="text-align:center;">
+	<video repeat controls height="90%" id="video" src="video.mov">Your browser doesn't support the video tag!</video><br>
+	<span id="timestamp">0</span>
+</body>
+</html>
