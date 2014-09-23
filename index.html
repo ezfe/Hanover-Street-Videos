@@ -2,13 +2,10 @@
 <head>
 	<script src="js/jquery.min.js"></script>
 	<script>
-		function getCurrentTime(id) {
-			return document.getElementById(id).currentTime
-		}
 		$(document).ready(function(){
-			document.getElementById('video').ontimeupdate = function(){
-				$('#timestamp').html(getCurrentTime('video'));
-			});
+			//document.getElementById('video').ontimeupdate = function(){
+			//	$('#timestamp').html(document.getElementById('video').currentTime);
+			//};
 		});
 	</script>
 </head>
