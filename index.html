@@ -3,50 +3,71 @@
 	<script src="js/jquery.min.js"></script>
 	<script>
 		var markpoints = [
-			{
-				"start": 2.7,
-				"end": 4.5,
-				"id": "austin-ave"
-			},
-			{
-				"start": 4.5,
-				"end": 9.0,
-				"id": "river-road"
-			},
-			{
-				"start": 9.0,
-				"end": 11.2,
-				"id": "freeman-road"
-			},
-			{
-				"start": 11.2,
-				"end": 13.48,
-				"id": "kingsford-road"
-			}
+		{
+			"start": 2.7,
+			"end": 4.5,
+			"id": "austin-ave",
+			"displayname": "Austin Ave"
+		},
+		{
+			"start": 4.5,
+			"end": 9.0,
+			"id": "valley-road",
+			"displayname": "Valley Road"
+		},
+		{
+			"start": 9.0,
+			"end": 11.2,
+			"id": "freeman-road",
+			"displayname": "Freeman Road"
+		},
+		{
+			"start": 11.2,
+			"end": 13.48,
+			"id": "kingsford-road",
+			"displayname": "Kingsford Road"
+		}
 		];
 
 		$(document).ready(function(){
+			var video = document.getElementById("video");
 			for (var i = 0; i < markpoints.length; i++) {
-				$('#buttons').append('<button class="markpoint-button" id="' + markpoints[i].id + '-button">' + markpoints[i].id + '</button>');
-				$('#' + markpoints[i].id + '-button').hide();
+				var mark = markpoints[i];
+				$('#buttons').append('<h1 class="markpoint-labels" id="' + mark.id + '-label">' + mark.displayname + '</h1>');
+				$('#' + mark.id + '-label').hide();
 			};
-			document.getElementById('video').ontimeupdate = function(){
-				var time = document.getElementById('video').currentTime
-				$('#timestamp').html(time);
+			video.ontimeupdate = function(){
+				var time = video.currentTime
+				//$('#timestamp').html(time);
 				for (var i = 0; i < markpoints.length; i++) {
-					if (markpoints[i].start <= time && markpoints[i].end >= time) {
-						$('#' + markpoints[i].id + '-button').show();
+					var mark = markpoints[i];
+					var currentMark = {"status":false};
+					if (mark.start <= time && mark.end >= time) {
+						$('#' + mark.id + '-label').show();
+						currentMark = {"status":true,"id":mark.id};
 					} else {
-						$('#' + markpoints[i].id + '-button').hide();
+						$('#' + mark.id + '-label').hide();
+					}
+					if (currentMark.status) {
+						if (time > mark.end - 1) {
+							setTimeout(function(){
+								video.pause();
+							},800);
+						}
 					}
 				};
 			};
+			$('#go-forward').click(function(){
+				video.play();
+			});
 		});
 	</script>
 </head>
 <body style="text-align:center;">
-	<video repeat controls height="90%" id="video" src="video.mov">Your browser doesn't support the video tag!</video><br>
-	<span id="timestamp">0</span>
+	<video height="50%" id="video" src="video.mov">Your browser doesn't support the video tag!</video>
+	<br>
+	<button id="go-forward">&#128316; Go Forward</button>
+	<br>
 	<div id="buttons" width="100%"></div>
 </body>
 </html>
