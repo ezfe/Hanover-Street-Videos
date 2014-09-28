@@ -2,15 +2,51 @@
 <head>
 	<script src="js/jquery.min.js"></script>
 	<script>
+		var markpoints = [
+			{
+				"start": 2.7,
+				"end": 4.5,
+				"id": "austin-ave"
+			},
+			{
+				"start": 4.5,
+				"end": 9.0,
+				"id": "river-road"
+			},
+			{
+				"start": 9.0,
+				"end": 11.2,
+				"id": "freeman-road"
+			},
+			{
+				"start": 11.2,
+				"end": 13.48,
+				"id": "kingsford-road"
+			}
+		];
+
 		$(document).ready(function(){
-			//document.getElementById('video').ontimeupdate = function(){
-			//	$('#timestamp').html(document.getElementById('video').currentTime);
-			//};
+			for (var i = 0; i < markpoints.length; i++) {
+				$('#buttons').append('<button class="markpoint-button" id="' + markpoints[i].id + '-button">' + markpoints[i].id + '</button>');
+				$('#' + markpoints[i].id + '-button').hide();
+			};
+			document.getElementById('video').ontimeupdate = function(){
+				var time = document.getElementById('video').currentTime
+				$('#timestamp').html(time);
+				for (var i = 0; i < markpoints.length; i++) {
+					if (markpoints[i].start <= time && markpoints[i].end >= time) {
+						$('#' + markpoints[i].id + '-button').show();
+					} else {
+						$('#' + markpoints[i].id + '-button').hide();
+					}
+				};
+			};
 		});
 	</script>
 </head>
 <body style="text-align:center;">
 	<video repeat controls height="90%" id="video" src="video.mov">Your browser doesn't support the video tag!</video><br>
 	<span id="timestamp">0</span>
+	<div id="buttons" width="100%"></div>
 </body>
 </html>
