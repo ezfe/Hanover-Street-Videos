@@ -8,23 +8,32 @@
 				"end": 4.5,
 				"displayname": "Austin Ave",
 				"next": [
-					"valley-road"
+				"valley-road"
 				]
 			},
 			"valley-road": {
 				"start": 4.5,
 				"end": 9.0,
-				"displayname": "Valley Road"
+				"displayname": "Valley Road",
+				"next": [
+				"freeman-road"
+				]
 			},
 			"freeman-road": {
 				"start": 9.0,
 				"end": 11.2,
-				"displayname": "Freeman Road"
+				"displayname": "Freeman Road",
+				"next": [
+				"kingsford-road"
+				]
 			},
 			"kingsford-road": {
 				"start": 11.2,
 				"end": 13.48,
-				"displayname": "Kingsford Road"
+				"displayname": "Kingsford Road",
+				"next": [
+				"12-kingsford-drive",
+				]
 			},
 			"12-kingsford-drive": {
 				"start": 13.48,
@@ -36,34 +45,44 @@
 		var playing = true;
 		$(document).ready(function(){
 			var video = document.getElementById("video");
-			for (var i = 0; i < markpoints.length; i++) {
-				var mark = markpoints[i];
-				$('#buttons').append('<h1 class="markpoint-labels" id="' + mark.id + '-label">' + mark.displayname + '</h1>');
-				$('#' + mark.id + '-label').hide();
+			for (var i = 0; i < Object.keys(markpoints).length; i++) {
+				var key = Object.keys(markpoints)[i];
+				var mark = markpoints[key];
+				$('#labels').append('<h1 class="markpoint-labels" id="' + key + '-label">' + mark.displayname + '</h1>');
+				$('#' + key + '-label').hide();
 			};
 			video.ontimeupdate = function(){
-				var time = video.currentTime
+				$('.markpoint-labels').hide();
+				$('#' + currentSection + '-label').show();
 				if (playing) {
-					if (time > markpoints[currentSection].end) {
+					if (video.currentTime > markpoints[currentSection].end) {
 						video.pause();
 						video.currentTime = markpoints[currentSection].end;
 						playing = false;
-						$('#' + currentSection + '-label').show();
+						$('#buttons').html('');
+						for (var i = 0; i < markpoints[currentSection].next.length; i++) {
+							$('#buttons').append('<button class="loadPointButton" loadPoint="' + markpoints[currentSection].next[i] + '">' + markpoints[markpoints[currentSection].next[i]].displayname + '</button>');
+						};
 					}
 				}
 			};
-			$('#go-forward').click(function(){
+			$(document).on('click','.loadPointButton', function(){
+				currentSection = $(this).attr('loadPoint');
+				video.currentTime = markpoints[currentSection].start;
+				playing = true;
 				video.play();
+				$('#buttons').html('');
 			});
 		});
 </script>
 </head>
 <body style="text-align:center;">
-	<video height="50%" id="video" src="video.mov">Your browser doesn't support the video tag!</video>
+	<video height="50%" id="video" controls src="video.mov">Your browser doesn't support the video tag!</video>
 	<br>
-	<button id="go-forward">&#128316; Go Forward</button>
-	<button id="go-backwards">&#128316; Go Back</button>
+	<div id="buttons">
+
+	</div>
 	<br>
-	<div id="buttons" width="100%"></div>
+	<div id="labels" width="100%"></div>
 </body>
 </html>
