@@ -2,33 +2,38 @@
 <head>
 	<script src="js/jquery.min.js"></script>
 	<script>
-		var markpoints = [
-		{
-			"start": 2.7,
-			"end": 4.5,
-			"id": "austin-ave",
-			"displayname": "Austin Ave"
-		},
-		{
-			"start": 4.5,
-			"end": 9.0,
-			"id": "valley-road",
-			"displayname": "Valley Road"
-		},
-		{
-			"start": 9.0,
-			"end": 11.2,
-			"id": "freeman-road",
-			"displayname": "Freeman Road"
-		},
-		{
-			"start": 11.2,
-			"end": 13.48,
-			"id": "kingsford-road",
-			"displayname": "Kingsford Road"
-		}
-		];
-
+		var markpoints = {
+			"austin-ave": {
+				"start": 2.7,
+				"end": 4.5,
+				"displayname": "Austin Ave",
+				"next": [
+					"valley-road"
+				]
+			},
+			"valley-road": {
+				"start": 4.5,
+				"end": 9.0,
+				"displayname": "Valley Road"
+			},
+			"freeman-road": {
+				"start": 9.0,
+				"end": 11.2,
+				"displayname": "Freeman Road"
+			},
+			"kingsford-road": {
+				"start": 11.2,
+				"end": 13.48,
+				"displayname": "Kingsford Road"
+			},
+			"12-kingsford-drive": {
+				"start": 13.48,
+				"end": 14.6,
+				"displayname": "12 Kingsford Road"
+			}
+		};
+		var currentSection = "austin-ave";
+		var playing = true;
 		$(document).ready(function(){
 			var video = document.getElementById("video");
 			for (var i = 0; i < markpoints.length; i++) {
@@ -38,35 +43,26 @@
 			};
 			video.ontimeupdate = function(){
 				var time = video.currentTime
-				//$('#timestamp').html(time);
-				for (var i = 0; i < markpoints.length; i++) {
-					var mark = markpoints[i];
-					var currentMark = {"status":false};
-					if (mark.start <= time && mark.end >= time) {
-						$('#' + mark.id + '-label').show();
-						currentMark = {"status":true,"id":mark.id};
-					} else {
-						$('#' + mark.id + '-label').hide();
+				if (playing) {
+					if (time > markpoints[currentSection].end) {
+						video.pause();
+						video.currentTime = markpoints[currentSection].end;
+						playing = false;
+						$('#' + currentSection + '-label').show();
 					}
-					if (currentMark.status) {
-						if (time > mark.end - 1) {
-							setTimeout(function(){
-								video.pause();
-							},800);
-						}
-					}
-				};
+				}
 			};
 			$('#go-forward').click(function(){
 				video.play();
 			});
 		});
-	</script>
+</script>
 </head>
 <body style="text-align:center;">
 	<video height="50%" id="video" src="video.mov">Your browser doesn't support the video tag!</video>
 	<br>
 	<button id="go-forward">&#128316; Go Forward</button>
+	<button id="go-backwards">&#128316; Go Back</button>
 	<br>
 	<div id="buttons" width="100%"></div>
 </body>
