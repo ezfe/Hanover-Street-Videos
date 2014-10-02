@@ -96,6 +96,13 @@
 		};
 		var currentSection = "hockey-tennis-1";
 		var playing = true;
+		function loadSection(section) {
+			currentSection = section;
+			video.currentTime = markpoints[currentSection].start;
+			playing = true;
+			video.play();
+			$('#buttons').html('');
+		}
 		$(document).ready(function(){
 			var video = document.getElementById("video");
 			for (var i = 0; i < Object.keys(markpoints).length; i++) {
@@ -113,24 +120,31 @@
 						video.currentTime = markpoints[currentSection].end;
 						playing = false;
 						$('#buttons').html('');
-						for (var i = 0; i < markpoints[currentSection].next.length; i++) {
-							$('#buttons').append('<button class="loadPointButton" loadPoint="' + markpoints[currentSection].next[i] + '">' + markpoints[markpoints[currentSection].next[i]].displayname + '</button>');
-						};
+						if (markpoints[currentSection].next.length == 1) {
+							loadSection(markpoints[currentSection].next[0]);
+						} else if (markpoints[currentSection].next.length > 1) {
+							for (var i = 0; i < markpoints[currentSection].next.length; i++) {
+								$('#buttons').append('<button class="loadPointButton" loadPoint="' + markpoints[currentSection].next[i] + '">' + markpoints[markpoints[currentSection].next[i]].displayname + '</button>');
+							}
+						}
 					}
 				}
 			};
 			$(document).on('click','.loadPointButton', function(){
-				currentSection = $(this).attr('loadPoint');
-				video.currentTime = markpoints[currentSection].start;
-				playing = true;
-				video.play();
-				$('#buttons').html('');
+				loadSection($(this).attr('loadPoint'))
 			});
 		});
 </script>
+<script>
+	function loadRegion(message) {
+		alert(message);
+	}
+</script>
 </head>
 <body style="text-align:center;">
-	<video height="80%" id="video" controls src="video.m4v">Your browser doesn't support the video tag!</video>
+	<div class="video">
+		<video height="80%" id="video" controls src="video.m4v">Your browser doesn't support the video tag!</video>
+	</div>
 	<br>
 	<div id="buttons">
 
