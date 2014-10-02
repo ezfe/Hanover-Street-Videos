@@ -3,98 +3,91 @@
 	<script src="js/jquery.min.js"></script>
 	<script>
 		var markpoints = {
-			"hockey-tennis-1": {
+			"kingsford-1-dir1": {
+				"start": 12.66,
+				"end": 16.16,
+				"displayname": "Kingsford Road",
+				"next": [
+				"kingsford-2-dir1",
+				"kingsford-turnto-12-right"
+				]
+			},
+			"kingsford-2-dir1": {
+				"start": 16.16,
+				"end": 21.93,
+				"displayname": "Kingsford Road",
+				"next": [
+				"kingsford-1-dir2"
+				]
+			},
+			"kingsford-1-dir2": {
+				"start": 21.93,
+				"end": 23.76,
+				"displayname": "Kingsford Road",
+				"next": [
+				"kingsford-turnto-12-left",
+				"kingsford-2-dir2"
+				]
+			},
+			"kingsford-2-dir2": {
+				"start": 23.76,
+				"end": 28.53,
+				"displayname": "Kingsford Road",
+				"next": [
+				"kingsford-1-dir1"
+				]
+			},
+			"kingsford-turnto-12-right": {
+				"start": 31.16,
+				"end": 34.83,
+				"displayname": "12 Kingsford",
+				"next": [
+				"kingsford-12-enter"
+				]
+			},
+			"kingsford-turnto-12-left": {
+				"start": 35.33,
+				"end": 34.83,
+				"displayname": "12 Kingsford",
+				"next": [
+				"kingsford-12-enter"
+				]
+			},
+			"kingsford-12-enter": {
+				"start": 38.86,
+				"end": 40.93,
+				"displayname": "12 Kingsford",
+				"next": [
+				"kingsford-12-exit"
+				]
+			},
+			"kingsford-12-exit": {
 				"start": 0,
-				"end": 1.9,
-				"displayname": "",
+				"end": 4.33,
+				"displayname": "12 Kingsford",
 				"next": [
-				"tennis-3",
-				"austin-ave"
+				"kingsford-turnout-12-left",
+				"kingsford-turnout-12-right"
 				]
 			},
-			"tennis-3": {
-				"start": 15.73,
-				"end": 21.4,
-				"displayname": "To Chase Road",
+			"kingsford-turnout-12-left": {
+				"start": 8.66,
+				"end": 12.66,
+				"displayname": "Kingsford Road (Left)",
 				"next": [
-				"chase-road"
+				"kingsford-2-dir2"
 				]
 			},
-			"chase-road": {
-				"start": 21.4,
-				"end": 27.5,
-				"displayname": "Chase Road",
+			"kingsford-turnout-12-right": {
+				"start": 4.33,
+				"end": 8.66,
+				"displayname": "Kingsford Road (Right)",
 				"next": [
-				"valley-road-2"
-				]
-			},
-			"austin-ave": {
-				"start": 1.9,
-				"end": 4.5,
-				"displayname": "Austin Ave",
-				"next": [
-				"valley-road"
-				]
-			},
-			"valley-road": {
-				"start": 4.5,
-				"end": 7.9,
-				"displayname": "Valley Road",
-				"next": [
-				"valley-road-2"
-				]
-			},
-			"valley-road-2": {
-				"start": 7.9,
-				"end": 9.0,
-				"displayname": "Valley Road",
-				"next": [
-				"freeman-road"
-				]
-			},
-			"freeman-road": {
-				"start": 9.0,
-				"end": 11.2,
-				"displayname": "Freeman Road",
-				"next": [
-				"kingsford-road"
-				]
-			},
-			"kingsford-road": {
-				"start": 11.2,
-				"end": 12.34,
-				"displayname": "Kingsford Road",
-				"next": [
-				"14-kingsford-drive",
-				"kingsford-road-2"
-				]
-			},
-			"kingsford-road-2": {
-				"start": 12.34,
-				"end": 13.48,
-				"displayname": "Kingsford Road",
-				"next": [
-				"12-kingsford-drive",
-				]
-			},
-			"12-kingsford-drive": {
-				"start": 13.48,
-				"end": 14.6,
-				"displayname": "12 Kingsford Road",
-				"next": [
-				"valley-road"
-				]
-			},
-			"14-kingsford-drive": {
-				"start": 28.06,
-				"end": 29.9,
-				"displayname": "14 Kingsford Road",
-				"next": [
-				"valley-road"
+				"kingsford-2-dir1"
 				]
 			}
 		};
-		var currentSection = "hockey-tennis-1";
+		var currentSection = "kingsford-12-exit";
 		var playing = true;
 		function loadSection(section) {
 			currentSection = section;
@@ -124,6 +117,8 @@
 							loadSection(markpoints[currentSection].next[0]);
 						} else if (markpoints[currentSection].next.length > 1) {
 							for (var i = 0; i < markpoints[currentSection].next.length; i++) {
+								console.log('Creating button for ' + currentSection);
+								console.log(markpoints[currentSection].next[i]);
 								$('#buttons').append('<button class="loadPointButton" loadPoint="' + markpoints[currentSection].next[i] + '">' + markpoints[markpoints[currentSection].next[i]].displayname + '</button>');
 							}
 						}
@@ -143,7 +138,7 @@
 </head>
 <body style="text-align:center;">
 	<div class="video">
-		<video height="80%" id="video" controls src="video.m4v">Your browser doesn't support the video tag!</video>
+		<video height="80%" id="video" controls src="video.mp4">Your browser doesn't support the video tag!</video>
 	</div>
 	<br>
 	<div id="buttons">
