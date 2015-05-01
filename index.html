@@ -46,7 +46,7 @@
 				]
 			},
 			"kingsford-turnto-12-left": {
-				"start": 35.33,
+				"start": 35.36,
 				"end": 34.83,
 				"displayname": "12 Kingsford",
 				"next": [
@@ -75,7 +75,7 @@
 				"end": 12.66,
 				"displayname": "Kingsford Road (Left)",
 				"next": [
-				"kingsford-2-dir2"
+				"kingsford-2-dir1"
 				]
 			},
 			"kingsford-turnout-12-right": {
@@ -98,9 +98,13 @@
 		}
 		$(document).ready(function(){
 			var video = document.getElementById("video");
+			$('#bookmarks').html('');
 			for (var i = 0; i < Object.keys(markpoints).length; i++) {
 				var key = Object.keys(markpoints)[i];
 				var mark = markpoints[key];
+
+				$('#bookmarks').append('<button onclick="loadSection(\'' + key + '\')">' + mark.displayname + '<br>' + key + '</button><br>');
+
 				$('#labels').append('<h1 class="markpoint-labels" id="' + key + '-label">' + mark.displayname + '</h1>');
 				$('#' + key + '-label').hide();
 			};
@@ -130,13 +134,18 @@
 			});
 		});
 </script>
-<script>
-	function loadRegion(message) {
-		alert(message);
+<style>
+	#bookmarks {
+		position: absolute;
+		display: float;
+		right: 0px;
 	}
-</script>
+</style>
 </head>
 <body style="text-align:center;">
+	<div id="bookmarks">
+		Loading...
+	</div>
 	<div class="video">
 		<video height="80%" id="video" controls src="video.mp4">Your browser doesn't support the video tag!</video>
 	</div>
